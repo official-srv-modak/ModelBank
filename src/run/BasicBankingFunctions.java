@@ -1,15 +1,14 @@
 package run;
 
 import dynamicDb.DynamicDB;
+import functionalities.logging.Logger;
 import functionalities.products.Deposit;
 import functionalities.products.Loan;
 import initializerClasses.*;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static run.Bank.scanString;
 
 public abstract class BasicBankingFunctions {
 
@@ -55,7 +54,21 @@ public abstract class BasicBankingFunctions {
         {
             customer.setActiveFlag(false);
         }
+        Logger.logSuccess("BasicBankingFuntions", customer.toString());
         return customer;
+    }
+
+    public static Account deleteAccount()
+    {
+        System.out.println("Enter the account id");
+        int id = scan.nextInt();
+        Account account = DynamicDB.getAccount(id);
+        if(account != null)
+        {
+            account.setActiveFlag(false);
+        }
+        Logger.logSuccess("BasicBankingFuntions", account.toString());
+        return account;
     }
     public static ArrayList<Customer> createMultipleCustomersPrompt(int number)
     {
@@ -88,6 +101,7 @@ public abstract class BasicBankingFunctions {
         deposit = new Deposit(customer, account, interest, charge);
         customer.addDeposit(deposit);
         DynamicDB.deposits.add(deposit);
+        Logger.logSuccess("BasicBankingFuctions", deposit.toString());
         return deposit;
     }
 
@@ -143,6 +157,41 @@ public abstract class BasicBankingFunctions {
         System.out.println("Enter the parameter you want to edit?");
         String property = scan.nextLine();
         Customer.changeProperty(property, customer);
+    }
+
+    public static void seeAccount(double accountID)
+    {
+        Account account = DynamicDB.getAccount(accountID);
+        Customer customer = DynamicDB.getCustomer((int)account.getCustomerId());
+
+        System.out.println("ACCOUNT : ");
+        System.out.println("Account ID : "+accountID);
+        System.out.println("Account Balance : "+account.getprinciple());
+        System.out.println("Account ACTIVE : "+account.isActiveFlag());
+        System.out.println("Account Type : "+account.getACCT_TYPE());
+        if(account.getACCT_TYPE().equalsIgnoreCase("DEPOSIT"))
+        {
+            Deposit deposit = DynamicDB.getDeposit(accountID);
+            System.out.println("Account Interest Rate : "+deposit.getInterest());
+            System.out.println("Account Charges Rate : "+deposit.getCharge());
+            System.out.println("Deposit type : "+deposit.getdepositType());
+            System.out.println("Customer : "+deposit.getCustomer());
+
+        }
+        else
+        {
+            Loan loan = DynamicDB.getLoan(accountID);
+            System.out.println("Account Interest Rate : " + loan.getInterest()!=null?loan.getInterest():"NULL");
+            System.out.println("Account Charges Rate : "+loan.getCharge()!=null?loan.getCharge():"NULL");
+            System.out.println("Loan type : "+loan.getLoanType()!=null?loan.getLoanType():"NULL");
+            System.out.println("Customer : "+loan.getCustomer()!=null?loan.getCustomer():"NULL");
+        }
+        System.out.println("Transactions done on Account : "+DynamicDB.getAllAccountTransactions(accountID));
+    }
+
+    public static void interestAccretion()
+    {
+
     }
 
 

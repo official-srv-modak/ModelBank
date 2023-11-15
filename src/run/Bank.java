@@ -9,6 +9,9 @@ import initializerClasses.*;
 
 import java.util.Scanner;
 
+import static run.BasicBankingFunctions.deleteAccount;
+import static run.BasicBankingFunctions.seeAccount;
+
 public class Bank {
     private static Scanner scan = new Scanner(System.in);
     public static void main(String[] args)
@@ -108,9 +111,10 @@ public class Bank {
     {
         System.out.println("1. Loan Operation");
         System.out.println("2. Deposit Operation");
-        System.out.println("3. SEE all Account details");
-        System.out.println("4. SEE all Loan details");
-        System.out.println("5. SEE all Deposit details");
+        System.out.println("3. See specific Account details");
+        System.out.println("4. SEE all Account details");
+        System.out.println("5. SEE all Loan details");
+        System.out.println("6. SEE all Deposit details");
         String temp = scan.nextLine();
         int ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
         switch (ch)
@@ -119,17 +123,21 @@ public class Bank {
                 loanOperations();
                 break;
             case 2:
-                depositOperations();
+                depositAccountOperations();
                 break;
             case 3:
+                System.out.println("Enter account number : ");
+                seeAccount(scan.nextDouble());
+                break;
+            case 4:
                 for(Account acc : DynamicDB.accounts)
                     System.out.println(acc);
                 break;
-            case 4:
+            case 5:
                 for(Loan loan : DynamicDB.loans)
                     System.out.println(loan);
                 break;
-            case 5:
+            case 6:
                 for(Deposit dep : DynamicDB.deposits)
                     System.out.println(dep);
                 break;
@@ -137,6 +145,45 @@ public class Bank {
                 System.out.println("INVALID OPTION!!! TRY AGAIN");
         }
     }
+
+    private static void depositAccountOperations() {
+        System.out.println("1. CREATE Deposit");
+        System.out.println("2. MODIFY Deposit");
+        System.out.println("3. CLOSE Deposit");
+        System.out.println("4. SEE Deposit details");
+        System.out.println("5. SEE all deposit details");
+        String temp = scan.nextLine();
+        int ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
+        switch (ch)
+        {
+            case 1:
+                System.out.println("Enter the Customer id");
+                int id = Integer.parseInt(scan.nextLine().trim()); // because sometimes the scanner is skipping some input prompt stops
+                Customer customer = DynamicDB.getCustomer(id);
+                if(customer != null)
+                    BasicBankingFunctions.createDepositAccountPrompt(customer, "DEPOSIT");
+                else
+                    System.out.println("INVALID CUSTOMER!!! TRY AGAIN");
+                break;
+            case 2:
+                break;
+            case 3:
+                deleteAccount();
+                break;
+            case 4:
+                System.out.println("Enter account number : ");
+                seeAccount(scan.nextDouble());
+                break;
+            case 5:
+                for(Deposit dep : DynamicDB.deposits)
+                    System.out.println(dep);
+                break;
+            default:
+                System.out.println("INVALID OPTION!!! TRY AGAIN");
+
+        }
+    }
+
     public static void transactionOperationsMenu()
     {
         System.out.println("1. DEPOSIT");
@@ -177,16 +224,6 @@ public class Bank {
         }
     }
 
-    public static String scanString()
-    {
-        String userInput = scan.nextLine();
-
-        while (userInput.trim().isEmpty()) {
-            userInput = scan.nextLine();
-        }
-
-        return userInput;
-    }
     public static void loanOperations()
     {
         System.out.println("1. CREATE Loan");
@@ -210,8 +247,11 @@ public class Bank {
             case 2:
                 break;
             case 3:
+                deleteAccount();
                 break;
             case 4:
+                System.out.println("Enter account number : ");
+                seeAccount(scan.nextDouble());
                 break;
             case 5:
                 for(Loan loan : DynamicDB.loans)
@@ -221,6 +261,17 @@ public class Bank {
                 System.out.println("INVALID OPTION!!! TRY AGAIN");
 
         }
+    }
+
+    public static String scanString()
+    {
+        String userInput = scan.nextLine();
+
+        while (userInput.trim().isEmpty()) {
+            userInput = scan.nextLine();
+        }
+
+        return userInput;
     }
 
     private static void addCustomersToDb(Customer customer)

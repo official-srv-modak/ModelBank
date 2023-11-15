@@ -40,4 +40,43 @@ public abstract class DynamicDB {
         }
         return null;
     }
+
+    public static Deposit getDeposit(double id)
+    {
+        for(Deposit deposit : deposits)
+        {
+            if (deposit.getAccount().getId() == id)
+                return deposit;
+        }
+        return null;
+    }
+    public static Loan getLoan(double id)
+    {
+        for(Loan loan : loans)
+        {
+            if (loan.getAccount().getId() == id)
+                return loan;
+        }
+        return null;
+    }
+    public static ArrayList<Transaction> getAllAccountTransactions(double accountID)
+    {
+        ArrayList<Transaction> output = new ArrayList<Transaction>();
+        for(Transaction txn : transactions)
+        {
+            if(txn.getFromAccountNumber() == accountID)
+            {
+                output.add(txn);
+            }
+        }
+        // doing this to group all DEBIT Together and all CREDIT after that
+        for(Transaction txn : transactions)
+        {
+            if(txn.getToAccountNumber() == accountID)
+            {
+                output.add(txn);
+            }
+        }
+        return output;
+    }
 }

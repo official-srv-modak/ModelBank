@@ -10,6 +10,8 @@ public class Account {
 
     private double principle;
 
+    private boolean activeFlag = true;
+
     public Account() {
         id = count+1;
         count++;
@@ -48,6 +50,14 @@ public class Account {
 
     public double getId() {
         return id;
+    }
+
+    public boolean isActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(boolean activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     /*@Override

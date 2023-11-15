@@ -9,20 +9,16 @@ public class Deposit {
     private Account account;
     private Interest interest;
     private Charge charge;
-    private double tenureElapsed;
-
     private static final LocalDate startDate = LocalDate.now();
     private static LocalDate endDate = null;
 
     private double assumedAmount;
-    private static boolean activeFlag = true;
 
     public Deposit(Customer customer, Account account, Interest interest, Charge charge) {
         this.customer = customer;
         this.account = account;
         this.interest = interest;
         this.charge = charge;
-        calculateAssumedAmount();
     }
 
     public Customer getCustomer() {
@@ -73,39 +69,16 @@ public class Deposit {
         account.setprinciple(principle);
     }
 
-    private double calculateAssumedAmount()
-    {
-        assumedAmount = Math.pow(account.getprinciple()*(1 + interest.getRate()/12), 12*tenureElapsed);
-        return assumedAmount;
-    }
-
-    public double getAssumedAmount() {
-        calculateAssumedAmount();
-        return assumedAmount;
-    }
 
     public static LocalDate getEndDate() {
         return endDate;
     }
 
-    public static void setEndDate(LocalDate endDate) {
+    public void setEndDate(LocalDate endDate) {
         Deposit.endDate = endDate;
-        activeFlag = false;
+        account.setActiveFlag(false);
     }
 
-    public double getTenureElapsed()
-    {
-        if(activeFlag)
-        {
-            tenureElapsed = LocalDate.now().getYear() - startDate.getYear();
-            return tenureElapsed;
-        }
-        else
-        {
-            tenureElapsed = endDate.getYear() - startDate.getYear();
-            return tenureElapsed;
-        }
-    }
 
     /*@Override
     public String toString() {
@@ -124,7 +97,6 @@ public class Deposit {
                 "Account=" + account +
                 ", interest=" + interest +
                 ", charge=" + charge +
-                ", tenureElapsed=" + tenureElapsed +
                 ", assumedAmount=" + assumedAmount +
                 '}';
     }

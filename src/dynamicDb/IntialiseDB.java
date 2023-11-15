@@ -38,7 +38,7 @@ public abstract class IntialiseDB {
         for(int i = 0; i < maxNumber; i++)
         {
             Customer customer = DynamicDB.customers.get(i);
-            Account account = new Account(customer.getId(), "DEPOSITS", generateRandom(1000, 10000));
+            Account account = new Account(customer.getId(), "DEPOSIT", generateRandom(1000, 10000));
             Deposit deposit = new Deposit(customer, account, new Interest("DEPOSIT", PropertyType.DEPOSIT_INT_RATE), new Charge("DEPOSIT", PropertyType.CHARGE_AMT_PERCENTAGE));
             customer.addDeposit(deposit);
             arrayList.add(deposit);

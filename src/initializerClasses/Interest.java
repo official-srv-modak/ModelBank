@@ -25,6 +25,8 @@ public class Interest {
 
     private double amount;
 
+    private double closingBalance;
+
     public Interest(String interestType, double rate) {
         this.interestType = interestType;
         this.rate = rate;
@@ -78,6 +80,22 @@ public class Interest {
         return amount;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public double getClosingBalance() {
+        return closingBalance;
+    }
+
+    public void setClosingBalance(double closingBalance) {
+        this.closingBalance = closingBalance;
+    }
+
     /*@Override
     public String toString() {
         return "Interest : " +"\n"+
@@ -94,6 +112,7 @@ public class Interest {
                 ", interestType='" + interestType + '\'' +
                 ", rate=" + rate +
                 ", amount=" + amount +
+                ", closingBalance=" + closingBalance +
                 '}';
     }
 }

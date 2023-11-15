@@ -6,6 +6,7 @@ import functionalities.products.Deposit;
 import functionalities.products.Loan;
 import initializerClasses.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -131,9 +132,13 @@ public abstract class BasicBankingFunctions {
         double principle = scan.nextDouble();
         System.out.println("Enter the tenure of loan in years");
         double tenureYears = scan.nextDouble();
-        Interest interest = new Interest("DEPOSIT", PropertyType.DEPOSIT_INT_RATE);
-        Charge charge = new Charge("DEPOSIT", PropertyType.CHARGE_AMT_PERCENTAGE);
+        System.out.println("Loan staring Today? Y/N ");
+        scan.nextLine();
+        String ch = scan.nextLine();
+        Interest interest = new Interest("LOAN", PropertyType.DEPOSIT_INT_RATE);
+        Charge charge = new Charge("LOAN", PropertyType.CHARGE_AMT_PERCENTAGE);
         Account account;
+
         if(!ACCT_TYPE.isEmpty())
         {
             account= new Account(customer.getId(), ACCT_TYPE, principle);
@@ -142,9 +147,17 @@ public abstract class BasicBankingFunctions {
         {
             account= new Account(customer.getId(), PropertyType.ACCT_TYPE[0], principle);
         }
-        loan = new Loan(customer, account, interest, charge, tenureYears);
+        if(ch.equalsIgnoreCase("Y"))
+            loan = new Loan(customer, account, LocalDate.now(), interest, charge, tenureYears);
+        else
+        {
+            System.out.println("Enter start Date in format YYYY-MM-DD");
+            LocalDate date = LocalDate.parse(scan.nextLine());
+            loan = new Loan(customer, account, date, interest, charge, tenureYears);
+        }
         customer.addLoans(loan);
         DynamicDB.loans.add(loan);
+        Logger.logSuccess("BasicBankingOperation", loan.toString());
         return loan;
     }
 

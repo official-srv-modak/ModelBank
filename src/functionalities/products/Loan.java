@@ -6,13 +6,15 @@ import java.time.LocalDate;
 
 public class Loan {
     private Customer customer;
+
+    private double borrowedAmount;
     private Account account;
     private Interest interest;
     private Charge charge;
     private double tenureYears, tenureElapsed;
 
-    private static final LocalDate startDate = LocalDate.now();
-    private static LocalDate endDate = null;
+    private LocalDate startDate = LocalDate.now();
+    private LocalDate endDate = null;
 
     private double assumedAmount;
 
@@ -38,6 +40,8 @@ public class Loan {
     public String toString() {
         return "Loan{" +
                 "Account=" + account +
+                ", borrowed amount="+ borrowedAmount +
+                ", Start Date="+ startDate +
                 ", interest=" + interest +
                 ", charge=" + charge +
                 ", tenureYears=" + tenureYears +
@@ -47,14 +51,19 @@ public class Loan {
                 '}';
     }
 
-    public Loan(Customer customer, Account account, Interest interest, Charge charge, double tenureYears) {
+    public Loan(Customer customer, Account account, LocalDate startDate, Interest interest, Charge charge, double tenureYears) {
         this.customer = customer;
         this.account = account;
+        this.startDate = startDate;
         this.interest = interest;
         this.charge = charge;
         this.tenureYears = tenureYears;
+        this.borrowedAmount = account.getprinciple();
+        setTenureElapsed();
+        calculateAmountTillDate();
         calculateAssumedAmount();
         calculatePenaltyInterest();
+        setTotalBalance();
     }
 
     public Customer getCustomer() {
@@ -98,6 +107,11 @@ public class Loan {
         this.charge = charge;
     }
 
+    public void setTenureElapsed() {
+        this.tenureElapsed = LocalDate.now().getYear() - startDate.getYear();
+        String str = "";
+    }
+
     public double getPrinciple() {
         return account.getprinciple();
     }
@@ -121,12 +135,17 @@ public class Loan {
 
     private double calculateAssumedAmount()
     {
-        double principle = account.getprinciple();
-        double rate = interest.getRate();
-        int n = 4;
-        double preAm = principle*(1 + (rate/n));
-        assumedAmount = Math.pow(preAm, tenureYears*n);
+        double interestAmount = account.getprinciple() * interest.getRate() * tenureYears /100;
+        assumedAmount = interestAmount + account.getprinciple();
         return assumedAmount;
+    }
+
+    private double calculateAmountTillDate()
+    {
+        double amount = account.getprinciple() * interest.getRate() * tenureElapsed /100;
+        interest.setAmount(amount);
+        interest.setClosingBalance(account.getprinciple()+amount);
+        return amount;
     }
 
     public double getAssumedAmount() {
@@ -138,13 +157,26 @@ public class Loan {
         return penaltyInterest;
     }
 
-    public static LocalDate getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public static void setEndDate(LocalDate endDate) {
-        Loan.endDate = endDate;
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
         activeFlag = false;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+        setTenureElapsed();
+        calculateAmountTillDate();
+        calculateAssumedAmount();
+        calculatePenaltyInterest();
+        setTotalBalance();
     }
 
     public double getTenureElapsed()
@@ -161,18 +193,25 @@ public class Loan {
         }
     }
 
-    public void calculatePenaltyInterest(){
+    public double calculatePenaltyInterest(){
         getTenureElapsed();
         if(tenureElapsed > tenureYears)
         {
+            penaltyInterest = new Interest("PENALTY", PropertyType.PENALTY_INT_RATE);
             penaltyInterest.setRate(PropertyType.PENALTY_INT_RATE);
             Charge penaltyIntCharge = new Charge("PENALTY", PropertyType.CHARGE_AMT_PERCENTAGE);
             penaltyInterest.calculateInterest(account.getprinciple(), penaltyIntCharge);
+            penaltyInterest.setClosingBalance(penaltyInterest.getAmount());
         }
         else
         {
             penaltyInterest = new Interest("PENALTY", 0);
+            penaltyInterest.setClosingBalance(penaltyInterest.getAmount());
         }
+        return penaltyInterest.getAmount();
     }
-
+    public void setTotalBalance()
+    {
+        account.setprinciple(account.getprinciple()+calculateAmountTillDate()+calculatePenaltyInterest());
+    }
 }

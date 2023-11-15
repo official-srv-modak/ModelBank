@@ -210,6 +210,8 @@ public class Bank {
                 fundsTransfer();
                 break;
             case 4:
+                System.out.println("Enter account number : ");
+                seeAccount(scan.nextDouble());
                 break;
             case 5:
                 break;

@@ -12,8 +12,6 @@ public class Deposit {
     private static final LocalDate startDate = LocalDate.now();
     private static LocalDate endDate = null;
 
-    private double assumedAmount;
-
     public Deposit(Customer customer, Account account, Interest interest, Charge charge) {
         this.customer = customer;
         this.account = account;
@@ -79,25 +77,12 @@ public class Deposit {
         account.setActiveFlag(false);
     }
 
-
-    /*@Override
-    public String toString() {
-        return "Deposit : "+ account.getId() +"\n"+
-                "Account = " + account +"\n"+
-                "Deposit type = '" + account.getACCT_TYPE() + '\'' +"\n"+
-                "Interest = " + interest +"\n"+
-                "Charge = " + charge +"\n"+
-                "Principle = " + account.getprinciple() +"\n"+
-                "Assumed Amount = " + assumedAmount+ "\n";
-    }*/
-
     @Override
     public String toString() {
         return "Deposit{" +
                 "Account=" + account +
                 ", interest=" + interest +
                 ", charge=" + charge +
-                ", assumedAmount=" + assumedAmount +
                 '}';
     }
 }

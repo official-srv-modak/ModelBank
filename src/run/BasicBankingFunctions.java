@@ -175,7 +175,6 @@ public abstract class BasicBankingFunctions {
     public static void seeAccount(double accountID)
     {
         Account account = DynamicDB.getAccount(accountID);
-        Customer customer = DynamicDB.getCustomer((int)account.getCustomerId());
 
         System.out.println("ACCOUNT : ");
         System.out.println("Account ID : "+accountID);

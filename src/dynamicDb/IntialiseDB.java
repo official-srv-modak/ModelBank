@@ -59,7 +59,7 @@ public abstract class IntialiseDB {
         for(int i = 0; i < maxNumber; i++)
         {
             Customer customer = DynamicDB.customers.get(i);
-            Account account = new Account(customer.getId(), "LOAN", generateRandom(1000, 10000));
+            Account account = new Account(customer.getId(), "LOAN", 0);
             int year = generateRandom(1970, LocalDate.now().getYear()-3);
             int m = generateRandom(1, 12);
             int date = generateRandom(1, 28);
@@ -70,7 +70,7 @@ public abstract class IntialiseDB {
             if(date < 10)
                 day = "0"+date;
             LocalDate startDate = LocalDate.parse(year+"-"+month+"-"+day);
-            Loan loan = new Loan(customer, account, startDate, new Interest("LOAN", PropertyType.LOAN_INT_RATE), new Charge("LOAN", PropertyType.CHARGE_AMT_PERCENTAGE), generateRandom(1,12));
+            Loan loan = new Loan(customer, generateRandom(1000, 10000), account, startDate, new Interest("LOAN", PropertyType.LOAN_INT_RATE), new Charge("LOAN", PropertyType.CHARGE_AMT_PERCENTAGE), generateRandom(1,12));
             customer.addLoans(loan);
             arrayList.add(loan);
             DynamicDB.accounts.add(account);

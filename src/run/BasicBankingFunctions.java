@@ -128,8 +128,8 @@ public abstract class BasicBankingFunctions {
     public static Loan createLoanPrompt(Customer customer, String ACCT_TYPE)
     {
         Loan loan;
-        System.out.println("Enter the principle amount of loan");
-        double principle = scan.nextDouble();
+        System.out.println("Enter the Sanctioned amount of loan");
+        double sanctioned = scan.nextDouble();
         System.out.println("Enter the tenure of loan in years");
         double tenureYears = scan.nextDouble();
         System.out.println("Loan staring Today? Y/N ");
@@ -141,19 +141,19 @@ public abstract class BasicBankingFunctions {
 
         if(!ACCT_TYPE.isEmpty())
         {
-            account= new Account(customer.getId(), ACCT_TYPE, principle);
+            account= new Account(customer.getId(), ACCT_TYPE, 0);
         }
         else
         {
-            account= new Account(customer.getId(), PropertyType.ACCT_TYPE[0], principle);
+            account= new Account(customer.getId(), PropertyType.ACCT_TYPE[0], 0);
         }
         if(ch.equalsIgnoreCase("Y"))
-            loan = new Loan(customer, account, LocalDate.now(), interest, charge, tenureYears);
+            loan = new Loan(customer, sanctioned, account, LocalDate.now(), interest, charge, tenureYears);
         else
         {
             System.out.println("Enter start Date in format YYYY-MM-DD");
             LocalDate date = LocalDate.parse(scan.nextLine());
-            loan = new Loan(customer, account, date, interest, charge, tenureYears);
+            loan = new Loan(customer, sanctioned, account, date, interest, charge, tenureYears);
         }
         customer.addLoans(loan);
         DynamicDB.loans.add(loan);

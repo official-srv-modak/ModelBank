@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public class Loan {
     private Customer customer;
 
+    private double sanctionedAmount;
     private double borrowedAmount;
     private Account account;
     private Interest interest;
@@ -41,6 +42,8 @@ public class Loan {
         return "Loan{" +
                 "Account=" + account +
                 ", borrowed amount="+ borrowedAmount +
+                ", sanctioned amount="+ sanctionedAmount +
+                ", disbursed amount="+ borrowedAmount +
                 ", Start Date="+ startDate +
                 ", interest=" + interest +
                 ", charge=" + charge +
@@ -51,8 +54,9 @@ public class Loan {
                 '}';
     }
 
-    public Loan(Customer customer, Account account, LocalDate startDate, Interest interest, Charge charge, double tenureYears) {
+    public Loan(Customer customer, double santionedAmount, Account account, LocalDate startDate, Interest interest, Charge charge, double tenureYears) {
         this.customer = customer;
+        this.sanctionedAmount = santionedAmount;
         this.account = account;
         this.startDate = startDate;
         this.interest = interest;
@@ -213,5 +217,21 @@ public class Loan {
     public void setTotalBalance()
     {
         account.setprinciple(account.getprinciple()+calculateAmountTillDate()+calculatePenaltyInterest());
+    }
+
+    public double getSanctionedAmount() {
+        return sanctionedAmount;
+    }
+
+    public void setSanctionedAmount(double sanctionedAmount) {
+        this.sanctionedAmount = sanctionedAmount;
+    }
+
+    public double getBorrowedAmount() {
+        return borrowedAmount;
+    }
+
+    public void setBorrowedAmount(double borrowedAmount) {
+        this.borrowedAmount = borrowedAmount;
     }
 }

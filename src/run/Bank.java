@@ -71,10 +71,9 @@ public class Bank {
     public static void customerOperationsMenu()
     {
         System.out.println("1. CREATE Customer");
-        System.out.println("2. MODIFY Customer");
-        System.out.println("3. DELETE Customer");
-        System.out.println("4. SEE Customer details");
-        System.out.println("5. SEE all Customers details");
+        System.out.println("2. DELETE Customer");
+        System.out.println("3. SEE Customer details");
+        System.out.println("4. SEE all Customers details");
         String temp = scan.nextLine();
         int ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
         switch (ch)
@@ -84,25 +83,18 @@ public class Bank {
                 addCustomersToDb(customer);
                 break;
             case 2:
-                break;
-            case 3:
                 customer = BasicBankingFunctions.deleteCustomer();
                 addCustomersToDb(customer);
                 break;
+            case 3:
+                System.out.println("Enter id of the customer : ");
+                scan.nextLine();
+                ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
+                Customer cus = DynamicDB.customers.get(ch-1);
+                BasicBankingFunctions.displayCustomerDetails(cus);
             case 4:
-//                System.out.println("Enter id of the customer : ");
-//                String temp = scan.nextLine();
-//                int ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
-//                Customer cus = DynamicDB.customers.get(id-1);
-//                BasicBankingFunctions.displayCustomerDetails(cus);
-
-                System.out.println("Enter any property value of customer : ");
-                String pred = scan.nextLine();
-                System.out.println(Customer.searchCustomerPropValues(pred, DynamicDB.customers));
-                break;
-            case 5:
-                for(Customer cus : DynamicDB.customers)
-                    System.out.println(cus);
+                for(Customer cust : DynamicDB.customers)
+                    System.out.println(cust);
                 break;
             default:
                 System.out.println("INVALID OPTION!!! TRY AGAIN");
@@ -150,10 +142,9 @@ public class Bank {
 
     private static void depositAccountOperations() {
         System.out.println("1. CREATE Deposit");
-        System.out.println("2. MODIFY Deposit");
-        System.out.println("3. CLOSE Deposit");
-        System.out.println("4. SEE Deposit details");
-        System.out.println("5. SEE all deposit details");
+        System.out.println("2. CLOSE Deposit");
+        System.out.println("3. SEE Deposit details");
+        System.out.println("4. SEE all deposit details");
         String temp = scan.nextLine();
         int ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
         switch (ch)
@@ -168,15 +159,13 @@ public class Bank {
                     System.out.println("INVALID CUSTOMER!!! TRY AGAIN");
                 break;
             case 2:
-                break;
-            case 3:
                 deleteAccount();
                 break;
-            case 4:
+            case 3:
                 System.out.println("Enter account number : ");
                 seeAccount(scan.nextDouble());
                 break;
-            case 5:
+            case 4:
                 for(Deposit dep : DynamicDB.deposits)
                     System.out.println(dep);
                 break;
@@ -248,7 +237,6 @@ public class Bank {
     public static void loanOperations()
     {
         System.out.println("1. CREATE Loan");
-        System.out.println("2. MODIFY Loan");
         System.out.println("3. CLOSE Loan");
         System.out.println("4. SEE Loan details");
         System.out.println("5. SEE all Loans details");
@@ -265,8 +253,6 @@ public class Bank {
                 else
                     System.out.println("INVALID CUSTOMER!!! TRY AGAIN");
                 break;
-            case 2:
-                break;
             case 3:
                 deleteAccount();
                 break;
@@ -282,17 +268,6 @@ public class Bank {
                 System.out.println("INVALID OPTION!!! TRY AGAIN");
 
         }
-    }
-
-    public static String scanString()
-    {
-        String userInput = scan.nextLine();
-
-        while (userInput.trim().isEmpty()) {
-            userInput = scan.nextLine();
-        }
-
-        return userInput;
     }
 
     private static void addCustomersToDb(Customer customer)

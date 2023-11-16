@@ -80,6 +80,7 @@ public class Bank {
                 ch = Integer.parseInt(temp.trim().isBlank()?"0":temp.trim()); // because sometimes the scanner is skipping some input prompt stops
                 Customer cus = DynamicDB.customers.get(ch-1);
                 BasicBankingFunctions.displayCustomerDetails(cus);
+                break;
             case 4:
                 for(Customer cust : DynamicDB.customers)
                     System.out.println(cust);

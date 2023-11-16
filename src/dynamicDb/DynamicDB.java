@@ -10,14 +10,18 @@ import java.util.ArrayList;
 
 public abstract class DynamicDB {
     public static int maxSize = 10000000;
-    public static ArrayList<Customer> customers = new ArrayList<>(maxSize);
+    public static Account[] accounts = new Account[maxSize];
+    public static Customer[] customers = new Customer[maxSize];
+    public static Deposit[] deposits = new Deposit[maxSize];
+    public static Loan[] loans = new Loan[maxSize];
+   // public static ArrayList<Customer> customers = new ArrayList<>(maxSize);
 
-    public static ArrayList<Account> accounts = new ArrayList<>(maxSize);
-    public static ArrayList<Deposit> deposits = new ArrayList<>(maxSize);
+   // public static ArrayList<Account> accounts = new ArrayList<>(maxSize);
+  //  public static ArrayList<Deposit> deposits = new ArrayList<>(maxSize);
 
-    public static ArrayList<Loan> loans = new ArrayList<>(maxSize);
+   // public static ArrayList<Loan> loans = new ArrayList<>(maxSize);
 
-    public static ArrayList<Transaction> transactions = new ArrayList<>(maxSize);
+   // public static ArrayList<Transaction> transactions = new ArrayList<>(maxSize);
 
 
 

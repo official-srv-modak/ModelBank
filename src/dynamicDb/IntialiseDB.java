@@ -22,9 +22,9 @@ public abstract class IntialiseDB {
         int randomNum = rand.nextInt(max - min + 1) + min;
         return randomNum;
     }
-    public static ArrayList<Customer> createCustomers()
+    public static Customer[] createCustomers()
     {
-        ArrayList<Customer> arrayList = new ArrayList<>();
+        Customer[] arrayList = new Customer[DynamicDB.maxSize];
         for(int i = 0; i < maxNumber; i++)
         {
             Customer customer = new Customer(firstName[generateRandom(0,firstName.length-1)], lastName[generateRandom(0,lastName.length-1)], generateRandomString(1), generateRandomString(2));

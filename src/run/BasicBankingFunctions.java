@@ -157,6 +157,7 @@ public abstract class BasicBankingFunctions {
         }
         customer.addLoans(loan);
         DynamicDB.loans.add(loan);
+        DynamicDB.accounts.add(account);
         Logger.logSuccess("BasicBankingOperation", loan.toString());
         return loan;
     }

@@ -21,19 +21,7 @@ public class Bank {
     }
 
     private static void intialise() {
-//        Customer c1 = new Customer("Sourav", "Modak", "North York M3H 0E3", "XNBC129");
-//        Customer c2 = new Customer("Manav", "Patel", "Burlington M4H 1F9", "CBIA128");
-//
-////        c1.addDeposit(new Deposit(new Account(c1.getId(), PropertyType.ACCT_TYPE[0], 2000), PropertyType.ACCT_TYPE[0], new Interest("DEPOSIT", PropertyType.DEPOSIT_INT_RATE), new Charge("DEPOSIT", PropertyType.CHARGE_AMT_PERCENTAGE), 2000)));
-////        c2.addAccount(new Account(c2.getId(), PropertyType.ACCT_TYPE[0], 5000));
-//        Customer c3 = BasicBankingFunctions.createCustomerPrompt();
-//        BasicBankingFunctions.createLoanPrompt(c3, "");
-//        BasicBankingFunctions.displayCustomerDetails(c1);
-//        BasicBankingFunctions.displayCustomerDetails(c2);
-//        BasicBankingFunctions.displayCustomerDetails(c3);
-
         intialiseBankingMenu();
-
     }
     public static void intialiseBankingMenu()
     {

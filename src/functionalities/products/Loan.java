@@ -235,14 +235,18 @@ public class Loan {
     }
     public void disburseAccounting(double amt, LocalDate date)
     {
-        setStartDate(date);
-        Transaction t1 = new Transaction();
-        t1.doTransaction(amt, IntialiseDB.bankAccID,account.getId());
-        setTenureElapsed();
-        calculateAmountTillDate();
-        calculateAssumedAmount();
-        calculatePenaltyInterest();
-        setTotalBalance();
+        if(this.getBorrowedAmount()+amt <= sanctionedAmount)
+        {
+            setStartDate(date);
+            this.setBorrowedAmount(this.getBorrowedAmount()+amt);
+            Transaction t1 = new Transaction();
+            t1.doTransaction(amt, IntialiseDB.bankAccID,account.getId());
+            setTenureElapsed();
+            calculateAmountTillDate();
+            calculateAssumedAmount();
+            calculatePenaltyInterest();
+            setTotalBalance();
+        }
     }
 
     public void repayLoan(double amt, LocalDate date, double fromAcc)
@@ -250,14 +254,9 @@ public class Loan {
         if(this.account.getprinciple() >= amt)
         {
             Transaction t1 = new Transaction();
-            t1.doTransaction(amt, fromAcc,account.getId());
-            setTenureElapsed();
-            calculateAmountTillDate();
-            calculateAssumedAmount();
-            calculatePenaltyInterest();
-            setTotalBalance();
+            t1.doTransaction(amt * -1, fromAcc,account.getId());
 
-            if(account.getprinciple()==0)
+            if(account.getprinciple()==0.0)
             {
                 this.setEndDate(date);
             }
@@ -277,6 +276,7 @@ public class Loan {
                 ", tenureYears=" + tenureYears +
                 ", tenureElapsed=" + tenureElapsed +
                 ", assumedAmount=" + assumedAmount +
+                ", end Date="+ endDate +
                 ", penaltyInterest=" + penaltyInterest +
                 '}';
     }

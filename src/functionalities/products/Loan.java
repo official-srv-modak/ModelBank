@@ -1,5 +1,8 @@
 package functionalities.products;
 
+import dynamicDb.IntialiseDB;
+import functionalities.Transaction;
+import functionalities.logging.Logger;
 import initializerClasses.*;
 
 import java.time.LocalDate;
@@ -37,23 +40,6 @@ public class Loan {
                 "Penalty Interest = " + penaltyInterest+ "\n";
     }*/
 
-    @Override
-    public String toString() {
-        return "Loan{" +
-                "Account=" + account +
-                ", borrowed amount="+ borrowedAmount +
-                ", sanctioned amount="+ sanctionedAmount +
-                ", disbursed amount="+ borrowedAmount +
-                ", Start Date="+ startDate +
-                ", interest=" + interest +
-                ", charge=" + charge +
-                ", tenureYears=" + tenureYears +
-                ", tenureElapsed=" + tenureElapsed +
-                ", assumedAmount=" + assumedAmount +
-                ", penaltyInterest=" + penaltyInterest +
-                '}';
-    }
-
     public Loan(Customer customer, double santionedAmount, Account account, LocalDate startDate, Interest interest, Charge charge, double tenureYears) {
         this.customer = customer;
         this.sanctionedAmount = santionedAmount;
@@ -63,11 +49,7 @@ public class Loan {
         this.charge = charge;
         this.tenureYears = tenureYears;
         this.borrowedAmount = account.getprinciple();
-        setTenureElapsed();
-        calculateAmountTillDate();
-        calculateAssumedAmount();
-        calculatePenaltyInterest();
-        setTotalBalance();
+        doLoanAccounting();
     }
 
     public Customer getCustomer() {
@@ -176,11 +158,7 @@ public class Loan {
 
     public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
-        setTenureElapsed();
-        calculateAmountTillDate();
-        calculateAssumedAmount();
-        calculatePenaltyInterest();
-        setTotalBalance();
+        doLoanAccounting();
     }
 
     public double getTenureElapsed()
@@ -233,5 +211,73 @@ public class Loan {
 
     public void setBorrowedAmount(double borrowedAmount) {
         this.borrowedAmount = borrowedAmount;
+    }
+
+    public void disburseLoan(double disburseAmount, LocalDate date)
+    {
+        if(disburseAmount <= sanctionedAmount)
+        {
+//            this.borrowedAmount = disburseAmount;
+//            this.setPrinciple(this.getPrinciple()+disburseAmount);
+
+            disburseAccounting(disburseAmount, date);
+            Logger.logSuccess("Loan", this.toString());
+
+        }
+    }
+    public void doLoanAccounting()
+    {
+        setTenureElapsed();
+        calculateAmountTillDate();
+        calculateAssumedAmount();
+        calculatePenaltyInterest();
+        setTotalBalance();
+    }
+    public void disburseAccounting(double amt, LocalDate date)
+    {
+        setStartDate(date);
+        Transaction t1 = new Transaction();
+        t1.doTransaction(amt, IntialiseDB.bankAccID,account.getId());
+        setTenureElapsed();
+        calculateAmountTillDate();
+        calculateAssumedAmount();
+        calculatePenaltyInterest();
+        setTotalBalance();
+    }
+
+    public void repayLoan(double amt, LocalDate date, double fromAcc)
+    {
+        if(this.account.getprinciple() >= amt)
+        {
+            Transaction t1 = new Transaction();
+            t1.doTransaction(amt, fromAcc,account.getId());
+            setTenureElapsed();
+            calculateAmountTillDate();
+            calculateAssumedAmount();
+            calculatePenaltyInterest();
+            setTotalBalance();
+
+            if(account.getprinciple()==0)
+            {
+                this.setEndDate(date);
+            }
+            Logger.logSuccess("Loan", this.toString());
+        }
+
+    }
+    @Override
+    public String toString() {
+        return "Loan{" +
+                "Account=" + account +
+                ", sanctioned amount="+ sanctionedAmount +
+                ", disbursed amount="+ borrowedAmount +
+                ", Start Date="+ startDate +
+                ", interest=" + interest +
+                ", charge=" + charge +
+                ", tenureYears=" + tenureYears +
+                ", tenureElapsed=" + tenureElapsed +
+                ", assumedAmount=" + assumedAmount +
+                ", penaltyInterest=" + penaltyInterest +
+                '}';
     }
 }

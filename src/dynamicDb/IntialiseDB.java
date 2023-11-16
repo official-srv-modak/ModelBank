@@ -11,6 +11,8 @@ import java.util.Random;
 public abstract class IntialiseDB {
 
     public static int maxNumber = 100;
+
+    public static double bankAccID = maxNumber+1;
     private static String[] firstName = {"Sourav", "Manav", "John", "Mark", "Meena", "Sneha", "Rohit"},
         lastName = {"Modak", "Smith", "Doe", "Patel", "Singhania", "Kumar", "Singh"};
 

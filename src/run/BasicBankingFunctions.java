@@ -188,7 +188,7 @@ public abstract class BasicBankingFunctions {
             System.out.println("Account Charges Rate : "+deposit.getCharge());
             System.out.println("Deposit type : "+deposit.getdepositType());
             System.out.println("Customer : "+deposit.getCustomer());
-
+            System.out.println(deposit);
         }
         else
         {
@@ -196,7 +196,8 @@ public abstract class BasicBankingFunctions {
             System.out.println("Account Interest Rate : " + loan.getInterest()!=null?loan.getInterest():"NULL");
             System.out.println("Account Charges Rate : "+loan.getCharge()!=null?loan.getCharge():"NULL");
             System.out.println("Loan type : "+loan.getLoanType()!=null?loan.getLoanType():"NULL");
-            System.out.println("Customer : "+loan.getCustomer()!=null?loan.getCustomer():"NULL");
+           // System.out.println("Customer : "+loan.getCustomer()!=null?loan.getCustomer():"NULL");
+            System.out.println(loan);
         }
         System.out.println("Transactions done on Account : "+DynamicDB.getAllAccountTransactions(accountID));
     }

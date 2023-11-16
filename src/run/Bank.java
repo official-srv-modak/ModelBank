@@ -7,6 +7,7 @@ import functionalities.products.Deposit;
 import functionalities.products.Loan;
 import initializerClasses.*;
 
+import java.time.LocalDate;
 import java.util.Scanner;
 
 import static run.BasicBankingFunctions.deleteAccount;
@@ -40,6 +41,7 @@ public class Bank {
 
         while(true)
         {
+            System.out.println("---------------------------------------------------------------------------------------------------------");
             System.out.println("1. CUSTOMER Operations");
             System.out.println("2. ACCOUNT Operations");
             System.out.println("3. TRANSACTION Operations");
@@ -214,8 +216,25 @@ public class Bank {
                 seeAccount(scan.nextDouble());
                 break;
             case 5:
+                System.out.println("Enter loan account number : ");
+                double acc = scan.nextDouble();
+                System.out.println("Enter the amount to be repayed : ");
+                double amt = scan.nextDouble();
+                System.out.println("Enter the DEBIT account number : ");
+                double debit = scan.nextDouble();
+                Loan loan = DynamicDB.getLoan(acc);
+                loan.repayLoan(amt, LocalDate.now(), debit);
                 break;
             case 6:
+                System.out.println("Enter loan account number : ");
+                acc = scan.nextDouble();
+                System.out.println("Enter the amount to be disbursed : ");
+                amt = scan.nextDouble();
+                System.out.println("Enter the date : ");
+                scan.nextLine();
+                LocalDate date = LocalDate.parse(scan.nextLine());
+                loan = DynamicDB.getLoan(acc);
+                loan.disburseLoan(amt, date);
                 break;
             case 7:
                 for(Transaction txn : DynamicDB.transactions)

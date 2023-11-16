@@ -112,15 +112,15 @@ public class Bank {
                 seeAccount(scan.nextDouble());
                 break;
             case 4:
-                for(Account acc : DynamicDB.accounts)
+                for(Account acc : DynamicDB.accounts) // take all values from temporary acc array and display
                     System.out.println(acc);
                 break;
             case 5:
-                for(Loan loan : DynamicDB.loans)
+                for(Loan loan : DynamicDB.loans) // take all values from temporary loan array and display
                     System.out.println(loan);
                 break;
             case 6:
-                for(Deposit dep : DynamicDB.deposits)
+                for(Deposit dep : DynamicDB.deposits) // take all values from temporary deposit array and display
                     System.out.println(dep);
                 break;
             default:
@@ -214,7 +214,7 @@ public class Bank {
                 loan.disburseLoan(amt, date);
                 break;
             case 7:
-                for(Transaction txn : DynamicDB.transactions)
+                for(Transaction txn : DynamicDB.transactions) // take all values from temporary transaction array and display
                     System.out.println(txn);
                 break;
             default:

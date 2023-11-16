@@ -174,14 +174,15 @@ public abstract class BasicBankingFunctions {
 
     public static void seeAccount(double accountID)
     {
+        // to see account details
         Account account = DynamicDB.getAccount(accountID);
 
         System.out.println("ACCOUNT : ");
         System.out.println("Account ID : "+accountID);
         System.out.println("Account Balance : "+account.getprinciple());
         System.out.println("Account ACTIVE : "+account.isActiveFlag());
-        System.out.println("Account Type : "+account.getACCT_TYPE());
-        if(account.getACCT_TYPE().equalsIgnoreCase("DEPOSIT"))
+        System.out.println("Account Type : "+account.getACCT_TYPE()); // end of basic acc details
+        if(account.getACCT_TYPE().equalsIgnoreCase("DEPOSIT")) // if it is deposit, display deposit details
         {
             Deposit deposit = DynamicDB.getDeposit(accountID);
             System.out.println("Account Interest Rate : "+deposit.getInterest());
@@ -190,13 +191,12 @@ public abstract class BasicBankingFunctions {
             System.out.println("Customer : "+deposit.getCustomer());
             System.out.println(deposit);
         }
-        else
+        else // if it is LOAN, display LOAN details
         {
             Loan loan = DynamicDB.getLoan(accountID);
             System.out.println("Account Interest Rate : " + loan.getInterest()!=null?loan.getInterest():"NULL");
             System.out.println("Account Charges Rate : "+loan.getCharge()!=null?loan.getCharge():"NULL");
             System.out.println("Loan type : "+loan.getLoanType()!=null?loan.getLoanType():"NULL");
-           // System.out.println("Customer : "+loan.getCustomer()!=null?loan.getCustomer():"NULL");
             System.out.println(loan);
         }
         System.out.println("Transactions done on Account : "+DynamicDB.getAllAccountTransactions(accountID));

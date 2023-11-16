@@ -34,15 +34,15 @@ public class Transaction {
 
     public void deposit(double amount, double toAccountNumber)
     {
-        this.fromAccountNumber = DynamicDB.accounts.get(IntialiseDB.maxNumber).getId();
-        this.toAccountNumber = toAccountNumber;
+        this.fromAccountNumber = DynamicDB.accounts.get(IntialiseDB.maxNumber).getId(); // to get the BANK ACC
+        this.toAccountNumber = toAccountNumber;// get it from user
         Accounting.doAccounting(amount, fromAccountNumber, toAccountNumber);
     }
 
     public void withdraw(double amount, double fromAccountNumber)
     {
-        this.toAccountNumber = DynamicDB.accounts.get(IntialiseDB.maxNumber).getId();
-        this.fromAccountNumber = fromAccountNumber;
+        this.toAccountNumber = DynamicDB.accounts.get(IntialiseDB.maxNumber).getId(); // to get the BANK ACC
+        this.fromAccountNumber = fromAccountNumber;// get it from user
         Accounting.doAccounting(amount, fromAccountNumber, toAccountNumber);
     }
 
